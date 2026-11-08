@@ -16,11 +16,11 @@ public static class SortingAlgorithms
 
         
         // We need at most k iterations (length of the array)
-        for (int i = 0; i < array.Count(); i++)
+        for (int i = 0; i < array.Length; i++)
         {
             bool finished = true;
             
-            for (int j = 0; j < array.Count() - 1; j++)
+            for (int j = 0; j < array.Length - 1; j++)
             {
                 if (array[j] > array[j + 1])
                 {
@@ -70,6 +70,8 @@ public static class SortingAlgorithms
         return array;
     }
 
+    #region Merge sort
+    
     /// <summary>
     /// Sorts an array using Merge sort algorithm
     /// </summary>
@@ -77,6 +79,84 @@ public static class SortingAlgorithms
     /// <returns>Sorted array</returns>
     public static int[] Merge(int[] array)
     {
+        MergeSort(array, 0, array.Length - 1);
         return array;
     }
+
+    private static void MergeSort(int[] array, int left, int right)
+    {
+        if (left < right)
+        {
+            // Find the middle point:
+            int middle = (left + right) / 2;
+            
+            // Merge first and second half.
+            MergeSort(array, left, middle);
+            MergeSort(array, middle + 1, right);
+            
+            // Merge the sorted halves
+            _Merge(array, left, middle, right);
+        }
+    }
+
+    private static void _Merge(int[] array, int left, int middle, int right)
+    {
+        // Find the sizes of the two subarrays to be merged.
+        int n1 = middle - left + 1;
+        int n2 = right - middle;
+        
+        // Create temporary arrays:
+        int[] tempLeft = new int[n1];
+        int[] tempRight = new int[n2];
+
+        for (int index = 0; index < n1; index++)
+        {
+            tempLeft[index] = array[left + index];
+        }
+
+        for (int index = 0; index < n2; index++)
+        {
+            tempRight[index] = array[middle + 1 + index];
+        }
+        
+        // Merge the temporary arrays:
+        int i = 0, j = 0; // Indices
+
+        int k = left;
+
+        while (i < n1 && j < n2)
+        {
+            if (tempLeft[i] <= tempRight[j])
+            {
+                array[k] = tempLeft[i];
+                i++;
+            }
+            else
+            {
+                array[k] = tempRight[j];
+                j++;
+            }
+
+            k++;
+        }
+        
+        // Copy remaining elements of L[] if any
+        while (i < n1) {
+            array[k] = tempLeft[i];
+            i++;
+            k++;
+        }
+
+        // Copy remaining elements of R[] if any
+        while (j < n2) {
+            array[k] = tempRight[j];
+            j++;
+            k++;
+        }
+    }
+    
+    #endregion
+    
+    
+    
 }

@@ -40,6 +40,47 @@ public static class SortingAlgorithms
     }
 
     /// <summary>
+    /// Sorts an array using the bubble sort algorithm while tracking the step.
+    /// </summary>
+    /// <param name="array">The array to be sorted</param>
+    /// <param name="track">Whether to track or not the steps.</param>
+    /// <returns>The sorted array with a dictionary containing steps.</returns>
+    public static (int[], List<Step>) Bubble(int[] array, bool track)
+    {
+        // If not tracking use the old algorithm.
+        if (!track) return (Bubble(array), null);
+
+        List<Step> stepsList = new List<Step>();
+        
+        for (int i = 0; i < array.Length; i++)
+        {
+            bool finished = true;
+            
+            for (int j = 0; j < array.Length - 1; j++)
+            {
+                // We will compare the two variables, so store this as a step.
+                stepsList.Add(new (StepKind.Compare, j, j + 1));
+                if (array[j] > array[j + 1])
+                {
+                    // Here we will swap the two variables.
+                    stepsList.Add(new (StepKind.Swap, j, j + 1));
+                    
+                    // Swap the two variables:
+                    array[j] += array[j + 1];
+                    array[j + 1] = array[j] - array[j + 1];
+                    array[j] -= array[j + 1];
+                    
+                    finished = false;
+                }
+            }
+
+            if (finished) break; // No need for iterations if it is sorted.
+        }
+        
+        return (array,  stepsList);
+    }
+
+    /// <summary>
     /// Sorts an integer array using the Insertion sort algorithm
     /// </summary>
     /// <param name="array">The array to be sorted.</param>

@@ -1,0 +1,50 @@
+@page "/Sorting"
+@using Algorithm_Visualiser.Algorithms.Sorting;
+
+<PageTitle>Sorting Algorithms Visualiser</PageTitle>
+
+<h3>Sorting</h3>
+
+<div class="bars" style="height: 300px;
+ width: 400px">
+    @foreach (int bar in _array)
+    {
+        <div class="bar" style="height:@(bar * 100 / Max)%;
+            background-color: @_colors[bar - 1];
+        "></div>
+    }
+</div>
+
+<button class="btn btn-primary"
+        @onclick="ShuffleArray">
+    Shuffle array
+</button>
+
+<button class="btn btn-primary"
+        @onclick="SortArray">
+    Sort array
+</button>
+
+@code {
+    // Bars colors
+    private readonly string[] _colors = ["red", "orange", "violet", "black"];
+    
+    // Displayed array
+    private int[] _array = [1, 2, 3, 4];
+
+    // Max of the array, to calculate the height
+    double Max => _array.Max();
+
+    /// <summary>
+    /// Shuffles the displayed array.
+    /// </summary>
+    private void ShuffleArray()
+    {
+        _array = _array.Shuffle().ToArray();
+    }
+
+    private void SortArray()
+    {
+        _array = SortingAlgorithms.Bubble((int[])_array.Clone());
+    }
+}

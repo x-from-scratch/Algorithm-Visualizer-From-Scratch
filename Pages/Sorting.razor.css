@@ -1,0 +1,10 @@
+.bars {
+    display: flex;
+    align-items: flex-end;
+    height: 320px;
+    gap: 1px;
+}
+
+.bar {
+    flex: 1;
+}
